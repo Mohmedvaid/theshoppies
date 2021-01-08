@@ -27,9 +27,11 @@ $(document).ready(function () {
     const appendMovies = (dataArray) => {
         dataArray.forEach(movie => {
             let element = `
+            <div id="${movie.imdbID}">
             <p>${movie.Title}</p>
             <p>${movie.Year}</p>
-            <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>`
+            <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>
+            </div>`
             appendElement(element, ".movies-result-container")
         });
     }
@@ -50,8 +52,8 @@ $(document).ready(function () {
         // remove from results
         console.log(movie)
         // add to nominate section
+        $(`div#${movie.imdbID}`).remove();
         appendElement(movie.Title, ".nominated-movie")
-
     }
 
     //ready ends
