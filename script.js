@@ -11,7 +11,8 @@ $(document).ready(function () {
         $(document).on('click', '.nominate-btn', function(){
             selectedMovie = $(this).attr('id')
             let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
-            console.log(nominatedMovie)
+            console.log(nominatedMovie[0])
+            moveToNominate(nominatedMovie[0])
         } )
     })
 
@@ -41,7 +42,17 @@ $(document).ready(function () {
         return movieData.filter(movie => movie.imdbID === movieId)
     }
 
+    const removeNominatedMovieFromResults = (imdbID) => {
 
+    }
+
+    const moveToNominate = (movie) =>{
+        // remove from results
+        console.log(movie)
+        // add to nominate section
+        appendElement(movie.Title, ".nominated-movie")
+
+    }
 
     //ready ends
 });
