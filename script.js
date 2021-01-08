@@ -8,6 +8,11 @@ $(document).ready(function () {
         let movieData = await getMovieData(movieTitle);
         console.log("moviedata 1", movieData.Search)
         appendMovies(movieData.Search)
+        $(document).on('click', '.nominate-btn', function(){
+            selectedMovie = $(this).attr('id')
+            let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
+            console.log(nominatedMovie)
+        } )
     })
 
     const getMovieData = async (movieTitle) => {
@@ -20,7 +25,10 @@ $(document).ready(function () {
     }
     const appendMovies = (dataArray) => {
         dataArray.forEach(movie => {
-            let element = `<h1>${movie.Title}</h1>`
+            let element = `
+            <p>${movie.Title}</p>
+            <p>${movie.Year}</p>
+            <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>`
             appendElement(element, ".movies-result-container")
         });
     }
@@ -28,6 +36,11 @@ $(document).ready(function () {
     const appendElement = (elemnt, appendTo) => {
         $(`${appendTo}`).append(elemnt);
     }
+
+    const nominateMovie = (movieData, movieId) => {
+        return movieData.filter(movie => movie.imdbID === movieId)
+    }
+
 
 
     //ready ends
