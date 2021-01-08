@@ -49,11 +49,18 @@ $(document).ready(function () {
     }
 
     const moveToNominate = (movie) =>{
+
+        let element = `
+        <div>
+            <p>${movie.Title}</p>
+            <p>${movie.Year}</p>
+            <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Remove</button>
+        </div>`
         // remove from results
-        console.log(movie)
-        // add to nominate section
         $(`div#${movie.imdbID}`).remove();
-        appendElement(movie.Title, ".nominated-movie")
+
+        // add to nominate section
+        appendElement(element, ".nominated-movie")
     }
 
     //ready ends
