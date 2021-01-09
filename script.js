@@ -23,7 +23,6 @@ $(document).ready(function () {
                         scrollTop: $("div.nominated-movie").offset().top
                     }, 100);
                 }
-                return false;
                 count++;
             } else {
                 alert("you have reached 5 movie limit")
@@ -65,10 +64,10 @@ $(document).ready(function () {
                 }
                 return `
                 <div id="${movie.imdbID}" class="result-movie">
-                    <img src="${movie.Poster}" alt="${movie.Title} poster" width="100" height="100">
-                    <p>Title: ${movie.Title}</p>
-                    <p>Year: ${movieYear}</p>
-                    <button type="button" class="btn btn-success btn-sm nominate-btn" id="${movie.imdbID}">Nominate</button>
+                    <img class="result-movie-grid-img" src="${movie.Poster}" alt="${movie.Title} poster" width="100" height="100">
+                    <p class="result-movie-grid-title">Title: ${movie.Title}</p>
+                    <p class="result-movie-grid-year" >Year: ${movieYear}</p>
+                    <button type="button" class="btn btn-success btn-sm nominate-btn result-movie-grid-btn" id="${movie.imdbID}">Nominate</button>
                 </div>`
             }).join('')}
         </div>`
@@ -91,10 +90,10 @@ $(document).ready(function () {
 
         let element = `
         <div id="${movie.imdbID}" class="result-movie">
-            <img src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
-            <p>${movie.Title}</p>
-            <p>${movie.Year}</p>
-            <button type="button" class="btn btn-danger btn-sm remove-btn"  id="${movie.imdbID}">Remove</button>
+            <img class="result-movie-grid-img"  src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
+            <p class="result-movie-grid-title">${movie.Title}</p>
+            <p class="result-movie-grid-year">${movie.Year}</p>
+            <button type="button" class="btn btn-danger btn-sm remove-btn result-movie-grid-btn"  id="${movie.imdbID}">Remove</button>
         </div>`
         // remove from results
         $(`div#${movie.imdbID}`).remove();
