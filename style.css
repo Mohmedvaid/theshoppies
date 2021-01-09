@@ -8,6 +8,9 @@ body{
     color: #6b7177;
     font-weight: 400;
 }
+p{
+    margin: 0 !important;
+}
 .main{
     margin: 50px;
 }
@@ -30,4 +33,12 @@ h1{
     border-radius: 5px;
     padding: 20px;
     margin-top: 50px;
+}
+
+.result-movie{
+    padding-top: 10px;
+}
+.results-heading{
+    font-size: 2em;
+    font-family: monospace;
 }

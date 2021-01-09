@@ -4,7 +4,6 @@ $(document).ready(function () {
 
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
-        console.log(count)
         event.preventDefault();
         let movieTitle = $(".form-control").val();
         movieData = await getMovieData(movieTitle);
@@ -47,12 +46,19 @@ $(document).ready(function () {
 
     const createMoviesResultContainer = (dataArray, searchTerm) =>{
         return container = `
-        <div class=results-search> Results of ${searchTerm}
+        <div class=results-search> 
+        <p class="results-heading"> Results of "${searchTerm}"</p>
             ${dataArray.map(movie =>{
+                movieYear = movie.Year;
+                // Remove "-" if there is only one year
+                if(movieYear[movieYear.length - 1] == "–" ){
+                    movieYear = movieYear.slice(0, -1)
+                }
                 return `
-                <div id="${movie.imdbID}">
-                    <p>${movie.Title}</p>
-                    <p>${movie.Year}</p>
+                <div id="${movie.imdbID}" class="result-movie">
+                    <p>Title: ${movie.Title}</p>
+                    <img src="${movie.Poster}" alt="Girl in a jacket" width="150" height="150">
+                    <p>Year: ${movieYear}</p>
                     <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>
                 </div>`
             }).join('')}
@@ -75,8 +81,9 @@ $(document).ready(function () {
     const moveToNominate = (movie) => {
 
         let element = `
-        <div id="${movie.imdbID}">
+        <div id="${movie.imdbID} class="result-movie">
             <p>${movie.Title}</p>
+            <img src="${movie.Poster}" alt="Girl in a jacket" width="150" height="150">
             <p>${movie.Year}</p>
             <button type="button" class="btn btn-primary remove-btn" id="${movie.imdbID}">Remove</button>
         </div>`
