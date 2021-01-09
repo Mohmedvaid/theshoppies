@@ -49,29 +49,45 @@ h1{
 }
 
 .results-search, .results-nominations{
-    text-align: center;
+    text-align: left;
 }
 
 .result-movie{
-    padding-top: 10px;
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
+    padding-top: 30px;
     display: grid;
     grid-template-areas:
-    'poster title title'
-    'poster year year'
-    'poster btn btn';
-    grid-gap: 3px;
+    'poster title btn'
+    'poster year btn';
+    grid-gap: 20px;
+    grid-template-columns: 1fr 2fr;
 }
-.result-movie-grid-img { grid-area: poster; }
-.result-movie-grid-title { grid-area: title; }
-.result-movie-grid-year { grid-area: year; }
-.result-movie-grid-btn { grid-area: btn; }
+.result-movie-grid-img { 
+    grid-area: poster; 
+}
+.result-movie-grid-title { 
+    grid-area: title; 
+    justify-self: start;
+    align-self: center;
+}
+.result-movie-grid-year { 
+    grid-area: year; 
+    justify-self: start;
+    align-self: center;
+}
+.result-movie-grid-btn { 
+    grid-area: btn; 
+    justify-self: center;
+}
 
 .results-heading, .nominations-heading{
     font-size: 2em;
     font-family: monospace;
+}
+
+.nominate-btn, .remove-btn{
+    max-width: 100px;
+    max-height: 30px;
+    align-self: center;
 }
 
 

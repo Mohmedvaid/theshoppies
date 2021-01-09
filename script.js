@@ -64,9 +64,9 @@ $(document).ready(function () {
                 }
                 return `
                 <div id="${movie.imdbID}" class="result-movie">
-                    <img class="result-movie-grid-img" src="${movie.Poster}" alt="${movie.Title} poster" width="100" height="100">
-                    <p class="result-movie-grid-title">Title: ${movie.Title}</p>
-                    <p class="result-movie-grid-year" >Year: ${movieYear}</p>
+                    <img class="result-movie-grid-img" src="${movie.Poster}" alt="${movie.Title} poster" width="100" height="100" style="border-radius:5px;">
+                    <p class="result-movie-grid-title" style="font-family: roboRoboto, Arial, sans-serif;">${movie.Title}</p>
+                    <p class="result-movie-grid-year" style="font-family: roboRoboto, Arial, sans-serif;">${movieYear}</p>
                     <button type="button" class="btn btn-success btn-sm nominate-btn result-movie-grid-btn" id="${movie.imdbID}">Nominate</button>
                 </div>`
             }).join('')}
