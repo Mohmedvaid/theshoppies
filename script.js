@@ -1,35 +1,35 @@
 $(document).ready(function () {
-    
-    $(".movie-search-btn").on('click', async function(){
+    let count = 0
+    let movieData;
+
+    $(".movie-search-btn").on('click', async function (e) {
+        e.preventDefault();
+        console.log(count)
         event.preventDefault();
-
         let movieTitle = $(".form-control").val();
-        console.log(movieTitle)
-        let movieData = await getMovieData(movieTitle);
-        console.log("moviedata 1", movieData.Search)
+        movieData = await getMovieData(movieTitle);
+        $(".movies-result-container").empty();
         appendMovies(movieData.Search)
-        $(document).on('click', '.nominate-btn', function(){
-            let selectedMovie = $(this).attr('id')
-            let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
-            console.log(nominatedMovie[0])
-            moveToNominate(nominatedMovie[0])
-        } )
 
-        $(document).on('click', '.remove-btn', function(){
-            let selectedMovieId = $(this).attr('id');
-            $(`#${selectedMovieId}`).remove();
-
-            let removedMovie = nominateMovie(movieData.Search, selectedMovieId);
-            let element = `
-            <div id="${removedMovie[0].imdbID}">
-                <p>${removedMovie[0].Title}</p>
-                <p>${removedMovie[0].Year}</p>
-                <button type="button" class="btn btn-primary nominate-btn" id="${removedMovie[0].imdbID}">Nominate</button>
-            </div>`
-            $('.movies-result-container').prepend(element)
-            // appendElement(element, ".movies-result-container")
-
+        $(".nominate-btn").unbind().click(function() {
+            if (count < 5) {
+                let selectedMovie = $(this).attr('id')
+                let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
+                moveToNominate(nominatedMovie[0])
+                count++;
+                console.log("count in nominate", count)
+            } else {
+                alert("you have reached 5 movie limit")
+            }
         })
+        
+    })
+    $(document).on('click', '.remove-btn', function () {
+        $(this).unbind("click")
+        let selectedMovieId = $(this).attr('id');
+        $(`#${selectedMovieId}`).remove();
+        count--;
+
     })
 
     const getMovieData = async (movieTitle) => {
@@ -61,7 +61,7 @@ $(document).ready(function () {
     }
 
     const removeNominatedMovie = (movieData, movieId) => {
-        let movie =  movieData.filter(movie => movie.imdbID === movieId)
+        let movie = movieData.filter(movie => movie.imdbID === movieId)
 
     }
 
