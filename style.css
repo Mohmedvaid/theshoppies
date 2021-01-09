@@ -1,4 +1,33 @@
-.container-main{
+body{
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: ShopifySans, Helvetica, Arial, Lucida Grande, sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #6b7177;
+    font-weight: 400;
+}
+.main{
+    margin: 50px;
+}
+.search{
+    margin: auto;
+    width: 500px;
+}
+
+h1{
+    background-color: #000639;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+}
+
+.results{
     display: flex;
     justify-content: space-around;
+    border: 2px solid #6b7177;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 50px;
 }

@@ -9,7 +9,7 @@ $(document).ready(function () {
         let movieTitle = $(".form-control").val();
         movieData = await getMovieData(movieTitle);
         $(".movies-result-container").empty();
-        appendMovies(movieData.Search)
+        appendMovies(movieData.Search, movieTitle)
 
         $(".nominate-btn").unbind().click(function() {
             if (count < 5) {
@@ -17,7 +17,6 @@ $(document).ready(function () {
                 let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
                 moveToNominate(nominatedMovie[0])
                 count++;
-                console.log("count in nominate", count)
             } else {
                 alert("you have reached 5 movie limit")
             }
@@ -40,16 +39,24 @@ $(document).ready(function () {
         })
         return movieData;
     }
-    const appendMovies = (dataArray) => {
-        dataArray.forEach(movie => {
-            let element = `
-            <div id="${movie.imdbID}">
-                <p>${movie.Title}</p>
-                <p>${movie.Year}</p>
-                <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>
-            </div>`
-            appendElement(element, ".movies-result-container")
-        });
+    const appendMovies = (dataArray, searchTerm) => {
+        let resultContainer = createMoviesResultContainer(dataArray, searchTerm)
+        appendElement(resultContainer, '.movies-result-container')
+
+    }
+
+    const createMoviesResultContainer = (dataArray, searchTerm) =>{
+        return container = `
+        <div class=results-search> Results of ${searchTerm}
+            ${dataArray.map(movie =>{
+                return `
+                <div id="${movie.imdbID}">
+                    <p>${movie.Title}</p>
+                    <p>${movie.Year}</p>
+                    <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>
+                </div>`
+            }).join('')}
+        </div>`
     }
 
     const appendElement = (elemnt, appendTo) => {
