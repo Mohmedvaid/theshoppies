@@ -29,16 +29,34 @@ h1{
 .results{
     display: flex;
     justify-content: space-around;
-    border: 2px solid #6b7177;
     border-radius: 5px;
     padding: 20px;
     margin-top: 50px;
 }
+.hidden{
+    display: none;
+}
+.movies-result-container, .nominated-movie {
+    padding: 20px;
+    min-width: 450px;
+}
+
+.grey-border{
+    border: 2px solid #6b7177;
+}
+
+.results-search, .results-nominations{
+    text-align: center;
+}
 
 .result-movie{
     padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.results-heading{
+.results-heading, .nominations-heading{
     font-size: 2em;
     font-family: monospace;
 }
+

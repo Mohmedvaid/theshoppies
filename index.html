@@ -22,14 +22,18 @@
       <div class="search">
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Movie Title..." aria-label="Search">
-          <button class="btn btn-outline-success movie-search-btn" type="submit">Search</button>
+          <button class="btn btn-outline-primary movie-search-btn" type="submit">Search</button>
         </form>
       </div>
   
       <!-- Results container -->
       <div class="results">
-        <div class="movies-result-container"></div>
-        <div class="nominated-movie"></div>
+        <div class="movies-result-container grey-border hidden"></div>
+        <div class="nominated-movie grey-border hidden">
+          <div class="results-nominations">
+            <p class="nominations-heading">Nominations</p>
+          </div>
+        </div>
       </div>
 
     </div>

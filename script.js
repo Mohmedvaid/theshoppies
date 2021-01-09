@@ -4,13 +4,14 @@ $(document).ready(function () {
 
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
-        event.preventDefault();
         let movieTitle = $(".form-control").val();
         movieData = await getMovieData(movieTitle);
         $(".movies-result-container").empty();
         appendMovies(movieData.Search, movieTitle)
+        $('.movies-result-container').show()
 
         $(".nominate-btn").unbind().click(function() {
+            $('.nominated-movie').show()
             if (count < 5) {
                 let selectedMovie = $(this).attr('id')
                 let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
@@ -25,7 +26,7 @@ $(document).ready(function () {
     $(document).on('click', '.remove-btn', function () {
         $(this).unbind("click")
         let selectedMovieId = $(this).attr('id');
-        $(`#${selectedMovieId}`).remove();
+        $(`div#${selectedMovieId}`).remove();
         count--;
 
     })
@@ -56,10 +57,10 @@ $(document).ready(function () {
                 }
                 return `
                 <div id="${movie.imdbID}" class="result-movie">
+                    <img src="${movie.Poster}" alt="${movie.Title} poster" width="100" height="100">
                     <p>Title: ${movie.Title}</p>
-                    <img src="${movie.Poster}" alt="Girl in a jacket" width="150" height="150">
                     <p>Year: ${movieYear}</p>
-                    <button type="button" class="btn btn-primary nominate-btn" id="${movie.imdbID}">Nominate</button>
+                    <button type="button" class="btn btn-success btn-sm nominate-btn" id="${movie.imdbID}">Nominate</button>
                 </div>`
             }).join('')}
         </div>`
@@ -81,17 +82,17 @@ $(document).ready(function () {
     const moveToNominate = (movie) => {
 
         let element = `
-        <div id="${movie.imdbID} class="result-movie">
+        <div id="${movie.imdbID}" class="result-movie">
+            <img src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
             <p>${movie.Title}</p>
-            <img src="${movie.Poster}" alt="Girl in a jacket" width="150" height="150">
             <p>${movie.Year}</p>
-            <button type="button" class="btn btn-primary remove-btn" id="${movie.imdbID}">Remove</button>
+            <button type="button" class="btn btn-danger btn-sm remove-btn"  id="${movie.imdbID}">Remove</button>
         </div>`
         // remove from results
         $(`div#${movie.imdbID}`).remove();
 
         // add to nominate section
-        appendElement(element, ".nominated-movie")
+        appendElement(element, ".results-nominations")
     }
 
     //ready ends
