@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let count = 0
     let movieData;
+    let isMobile = window.matchMedia("only screen and (max-width: 786px)").matches;
 
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
@@ -16,6 +17,13 @@ $(document).ready(function () {
                 let selectedMovie = $(this).attr('id')
                 let nominatedMovie = nominateMovie(movieData.Search, selectedMovie)
                 moveToNominate(nominatedMovie[0])
+                // scroll screen to nomination section
+                if(isMobile){
+                    $('html, body').animate({
+                        scrollTop: $("div.nominated-movie").offset().top
+                    }, 100);
+                }
+                return false;
                 count++;
             } else {
                 alert("you have reached 5 movie limit")
