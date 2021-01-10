@@ -1,126 +1,163 @@
 $(document).ready(function () {
-            let count = 0
-            let movieData;
-            let isMobile = window.matchMedia("only screen and (max-width: 786px)").matches;
-            let nominatedList = [];
+    let count = 0
+    let movieData;
+    let isMobile = window.matchMedia("only screen and (max-width: 786px)").matches;
+    let nominatedList = [];
+    let maxMoviesToNominate = 5
 
-            $(function () {
-                $(document).on('click', '#nominationLimitAlertCloseBtn', function () {
-                    $(this).parent().hide();
-                })
-            });
+    // close error alert form
+    $(function () {
+        $(document).on('click', '#nominationLimitAlertCloseBtn', function () {
+            $(this).parent().hide();
+        })
+    });
+    // close error alert form
+    $(function () {
+        $(document).on('click', '#iomdb-error-btn', function () {
+            $(this).parent().hide();
+        })
+    });
 
-            $(".movie-search-btn").on('click', async function (e) {
-                e.preventDefault();
-                let movieTitle = $(".form-control").val();
-                movieData = await getMovieData(movieTitle);
-                $(".movies-result-container").empty();
-                appendMovies(movieData.Search, movieTitle)
-                $('.movies-result-container').show()
+    // Display seach results with validations
+    $(".movie-search-btn").on('click', async function (e) {
+        e.preventDefault();
+        
+        let movieTitle = $(".form-control").val();
+        movieData = await getMovieData(movieTitle);
 
-                $(".nominate-btn").unbind().click(function () {
-                    $('.nominated-movie').show();
-                     if (count < 5) {
-                        let selectedMovieButtonId = $(this).attr('id')
-                        selectedMovieImdbId = selectedMovieButtonId.split("-")[1]
-                        nominatedList.push(selectedMovieImdbId)
-                        $(`#${selectedMovieButtonId}`).addClass('disabled')
+        // if error display it, else display movies
+        if(movieData.Error){
+            $(`#iomdb-error`).prepend(`<p>${movieData.Error}</p>`)
+            $(`#iomdb-error`).show()
+            
+        } else {
+            $(".movies-result-container").empty();
+            appendMovies(movieData.Search, movieTitle)
+            $('.movies-result-container').show()
 
-                        let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
-                        moveToNominate(nominatedMovie[0])
-                        // scroll screen to nomination section
-                        if (isMobile) {
-                            $('html, body').animate({
-                                scrollTop: $("div.nominated-movie").offset().top
-                            }, 100);
-                        }
-                        count++;
-                        console.log(count)
-                        if(count === 5){
-                            alert("yay!!!!!")
-                        }
-                    }else {
-                        $('#nominationLimitAlert').show();
-                        $("html, body").animate({
-                            scrollTop: 0
-                        });
+        }
+
+        $(".nominate-btn").unbind().click(function () {
+            $('.nominated-movie').show();
+
+            // if the nomiated movies are less the 5, nominate the clicked movie
+                if (count < maxMoviesToNominate) {
+                    // get buttin id 
+                    let selectedMovieButtonId = $(this).attr('id')
+                    
+                    // extract the movie id from the clicked button id
+                    selectedMovieImdbId = selectedMovieButtonId.split("-")[1]
+
+                    // add movie id to nominated list. This list will help to disable the nominate button for the movies already nomited
+                    nominatedList.push(selectedMovieImdbId)
+
+                    // disblale nominate button
+                    $(`#${selectedMovieButtonId}`).addClass('disabled')
+                    
+                    // get movie data of the clicked movie
+                    let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
+
+                    // move to nominate section on the DOM
+                    moveToNominate(nominatedMovie[0]);
+
+                    // Increament the count of nominated movie
+                    count++;
+                    
+                    // scroll screen to nomination section
+                    if (isMobile) {
+                        $('html, body').animate({
+                            scrollTop: $("div.nominated-movie").offset().top
+                        }, 100);
                     }
-                })
 
-            })
-            $(document).on('click', '.remove-btn', function () {
-                $(this).unbind("click")
-                let selectedMovieId = $(this).attr('id');
-                $(`div#${selectedMovieId}`).remove();
-                nominateBtnId = selectedMovieId.split("-")[1]
-                $(`#resultbtn-${nominateBtnId}`).removeClass(`disabled`)
-                count--;
+                    // if there are 
+                    if(count === maxMoviesToNominate){
+                        alert("yay!!!!!")
+                    }
+                // display error message on DOM as user has reached max nomination limit
+                } else {
+                    $('#nominationLimitAlert').show();
+                    $("html, body").animate({
+                        scrollTop: 0
+                    });
+                }
+        })
+    })
 
-            })
+    $(document).on('click', '.remove-btn', function () {
+        $(this).unbind("click")
+        let selectedMovieId = $(this).attr('id');
+        $(`div#${selectedMovieId}`).remove();
+        nominateBtnId = selectedMovieId.split("-")[1]
+        $(`#resultbtn-${nominateBtnId}`).removeClass(`disabled`)
+        count--;
 
-            const getMovieData = async (movieTitle) => {
-                let query = `https://www.omdbapi.com/?apikey=2ec4e2e5&s=${movieTitle}`
-                let movieData = await $.ajax({
-                    url: query,
-                    method: "GET"
-                })
-                return movieData;
-            }
-            const appendMovies = (dataArray, searchTerm) => {
-                let resultContainer = createMoviesResultContainer(dataArray, searchTerm)
-                appendElement(resultContainer, '.movies-result-container')
+    })
 
-            }
+    const getMovieData = async (movieTitle) => {
+        let query = `https://www.omdbapi.com/?apikey=2ec4e2e5&s=${movieTitle}`
+        let movieData = await $.ajax({
+            url: query,
+            method: "GET"
+        })
+        console.log(movieData.Error)
+        return movieData;
+    }
+    const appendMovies = (dataArray, searchTerm) => {
+        let resultContainer = createMoviesResultContainer(dataArray, searchTerm)
+        appendElement(resultContainer, '.movies-result-container')
 
-            const createMoviesResultContainer = (dataArray, searchTerm) => {
-                return container = `
-                    <div class=results-search> 
-                    <p class="results-heading"> Results of "${searchTerm}"</p>
-                        ${dataArray.map(movie =>{
-                            movieYear = movie.Year;
-                            isNominated = ""
-                            if(nominatedList.includes(movie.imdbID)){
-                                isNominated = "disabled"
-                            }
-                            // Remove "-" if there is only one year
-                            if(movieYear[movieYear.length - 1] == "–" ){
-                                movieYear = movieYear.slice(0, -1)
-                            }
-                            return ` 
-                                <div id = "result${movie.imdbID}"class = "result-movie">
-                                    <img class = "result-movie-grid-img" src = "${movie.Poster}" alt = "${movie.Title} poster" width = "100" height = "100" style = "border-radius:5px;">
-                                    <p class = "result-movie-grid-title" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movie.Title} </p> 
-                                    <p class = "result-movie-grid-year" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movieYear} </p> 
-                                    <button type = "button" class = "btn btn-success btn-sm nominate-btn result-movie-grid-btn ${isNominated}" id = "resultbtn-${movie.imdbID}"> Nominate </button> 
-                                </div>`
-                        }).join('')
-                } </div>`
-}
+    }
 
-const appendElement = (elemnt, appendTo) => {
-    $(`${appendTo}`).append(elemnt);
-}
+    const createMoviesResultContainer = (dataArray, searchTerm) => {
+        return container = `
+            <div class=results-search> 
+            <p class="results-heading"> Results of "${searchTerm}"</p>
+                ${dataArray.map(movie =>{
+                    movieYear = movie.Year;
+                    isNominated = ""
+                    if(nominatedList.includes(movie.imdbID)){
+                        isNominated = "disabled"
+                    }
+                    // Remove "-" if there is only one year
+                    if(movieYear[movieYear.length - 1] == "–" ){
+                        movieYear = movieYear.slice(0, -1)
+                    }
+                    return ` 
+                        <div id = "result${movie.imdbID}"class = "result-movie">
+                            <img class = "result-movie-grid-img" src = "${movie.Poster}" alt = "${movie.Title} poster" width = "100" height = "100" style = "border-radius:5px;">
+                            <p class = "result-movie-grid-title" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movie.Title} </p> 
+                            <p class = "result-movie-grid-year" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movieYear} </p> 
+                            <button type = "button" class = "btn btn-success btn-sm nominate-btn result-movie-grid-btn ${isNominated}" id = "resultbtn-${movie.imdbID}"> Nominate </button> 
+                        </div>`
+                }).join('')
+        } </div>`
+    }
 
-const nominateMovie = (movieData, movieId) => {
-    return movieData.filter(movie => movie.imdbID === movieId)
-}
+    const appendElement = (elemnt, appendTo) => {
+        $(`${appendTo}`).append(elemnt);
+    }
+
+    const nominateMovie = (movieData, movieId) => {
+        return movieData.filter(movie => movie.imdbID === movieId)
+    }
 
 
-const moveToNominate = (movie) => {
+    const moveToNominate = (movie) => {
 
-let element = `
-        <div id="nominated-${movie.imdbID}" class="result-movie">
-            <img class="result-movie-grid-img"  src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
-            <p class="result-movie-grid-title">${movie.Title}</p>
-            <p class="result-movie-grid-year">${movie.Year}</p>
-            <button type="button" class="btn btn-danger btn-sm remove-btn result-movie-grid-btn"  id="nominated-${movie.imdbID}">Remove</button>
-        </div>`
-// remove from results
-$(`#result-btn-${movie.imdbID}`).addClass(`disabled`);
+    let element = `
+            <div id="nominated-${movie.imdbID}" class="result-movie">
+                <img class="result-movie-grid-img"  src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
+                <p class="result-movie-grid-title">${movie.Title}</p>
+                <p class="result-movie-grid-year">${movie.Year}</p>
+                <button type="button" class="btn btn-danger btn-sm remove-btn result-movie-grid-btn"  id="nominated-${movie.imdbID}">Remove</button>
+            </div>`
+    // remove from results
+    $(`#result-btn-${movie.imdbID}`).addClass(`disabled`);
 
-// add to nominate section
-appendElement(element, ".results-nominations")
-}
+    // add to nominate section
+    appendElement(element, ".results-nominations")
+    }
 
 //ready ends
 });
