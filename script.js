@@ -3,6 +3,12 @@ $(document).ready(function () {
     let movieData;
     let isMobile = window.matchMedia("only screen and (max-width: 786px)").matches;
 
+    $(function() {
+        $(document).on('click', '#nominationLimitAlertCloseBtn', function() {
+            $(this).parent().hide();
+        })
+     });
+
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
         let movieTitle = $(".form-control").val();
@@ -25,7 +31,8 @@ $(document).ready(function () {
                 }
                 count++;
             } else {
-                alert("you have reached 5 movie limit")
+                $('#nominationLimitAlert').show();
+                // alert("you have reached 5 movie limit")
             }
         })
         
