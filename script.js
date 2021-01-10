@@ -5,13 +5,13 @@ $(document).ready(function () {
     let nominatedList = [];
     let maxMoviesToNominate = 5
 
-    // close error alert form
+    // Close error alert form
     $(function () {
         $(document).on('click', '#nominationLimitAlertCloseBtn', function () {
             $(this).parent().hide();
         })
     });
-    // close error alert form
+    // Close error alert form
     $(function () {
         $(document).on('click', '#iomdb-error-btn', function () {
             $(this).parent().hide();
@@ -21,17 +21,22 @@ $(document).ready(function () {
     // Display seach results with validations
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
+        $(`.results`).removeClass(`hidden`)
+        if(nominatedList.length === 0){
+            addEmptyNominationListMessage();
+        }
         
         let movieTitle = $(".form-control").val();
         movieData = await getMovieData(movieTitle);
-
+        $(".movies-result-container").empty();
         // if error display it, else display movies
         if(movieData.Error){
-            $(`#iomdb-error`).prepend(`<p>${movieData.Error}</p>`)
+            $(`#iomdb-error-message`).remove()
+            $(`#iomdb-error`).prepend(`<p id="iomdb-error-message">${movieData.Error}</p>`)
             $(`#iomdb-error`).show()
             
         } else {
-            $(".movies-result-container").empty();
+            // $(".movies-result-container").empty();
             appendMovies(movieData.Search, movieTitle)
             $('.movies-result-container').show()
 
@@ -39,6 +44,7 @@ $(document).ready(function () {
 
         $(".nominate-btn").unbind().click(function () {
             $('.nominated-movie').show();
+            $(`#empty-nomination-list-message`).remove()
 
             // if the nomiated movies are less the 5, nominate the clicked movie
                 if (count < maxMoviesToNominate) {
@@ -84,15 +90,37 @@ $(document).ready(function () {
         })
     })
 
+
+
     $(document).on('click', '.remove-btn', function () {
         $(this).unbind("click")
-        let selectedMovieId = $(this).attr('id');
-        $(`div#${selectedMovieId}`).remove();
-        nominateBtnId = selectedMovieId.split("-")[1]
-        $(`#resultbtn-${nominateBtnId}`).removeClass(`disabled`)
+        let nominateBtnId = $(this).attr('id');
+        $(`div#${nominateBtnId}`).remove();
+        let selectedMovieId = nominateBtnId.split("-")[1]
+        $(`#resultbtn-${selectedMovieId}`).removeClass(`disabled`)
         count--;
+        console.log(nominatedList)
+
+        removeFromNominationList(selectedMovieId, nominatedList)
+
+        if(nominatedList.length === 0){
+            addEmptyNominationListMessage();
+        }
 
     })
+
+    const removeFromNominationList = (omdbaId, nominatedList) => {
+        const index = nominatedList.indexOf(omdbaId);
+        if (index > -1) {
+            nominatedList.splice(index, 1);
+        }
+    }
+
+    const addEmptyNominationListMessage = () => {
+        $(`#empty-nomination-list-message`).remove();
+        $(`.results-nominations`).append(`<p id="empty-nomination-list-message">No Nominations!</p>`);
+        
+    }
 
     const getMovieData = async (movieTitle) => {
         let query = `https://www.omdbapi.com/?apikey=2ec4e2e5&s=${movieTitle}`
@@ -100,7 +128,6 @@ $(document).ready(function () {
             url: query,
             method: "GET"
         })
-        console.log(movieData.Error)
         return movieData;
     }
     const appendMovies = (dataArray, searchTerm) => {
@@ -124,12 +151,14 @@ $(document).ready(function () {
                         movieYear = movieYear.slice(0, -1)
                     }
                     return ` 
-                        <div id = "result${movie.imdbID}"class = "result-movie">
+                        <div id = "result${movie.imdbID}" class = "result-movie">
                             <img class = "result-movie-grid-img" src = "${movie.Poster}" alt = "${movie.Title} poster" width = "100" height = "100" style = "border-radius:5px;">
                             <p class = "result-movie-grid-title" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movie.Title} </p> 
                             <p class = "result-movie-grid-year" style = "font-family: roboRoboto, Arial, sans-serif;" > ${movieYear} </p> 
                             <button type = "button" class = "btn btn-success btn-sm nominate-btn result-movie-grid-btn ${isNominated}" id = "resultbtn-${movie.imdbID}"> Nominate </button> 
-                        </div>`
+                        </div>
+                        <div class="fade-line"></div>
+                        `
                 }).join('')
         } </div>`
     }

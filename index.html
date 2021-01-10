@@ -8,10 +8,17 @@
 
   <!-- Local CSS -->
   <link rel="stylesheet" href="style.css" />
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- Animation library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
   <title>Hello, world!</title>
 </head>
@@ -42,9 +49,9 @@
     </div>
 
     <!-- Results container -->
-    <div class="results">
-      <div class="movies-result-container grey-border animate__animated animate__slideInLeft hidden"></div>
-      <div class="nominated-movie grey-border animate__animated animate__slideInRight hidden">
+    <div class="results hidden">
+      <div class="movies-result-container grey-border animate__animated animate__slideInLeft "></div>
+      <div class="nominated-movie grey-border animate__animated animate__slideInRight ">
         <div class="results-nominations">
           <p class="nominations-heading ">Nominations</p>
         </div>
@@ -62,6 +69,7 @@
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
   </script>
   <script type="text/javascript" src="script.js"></script>
+  <script type="text/javascript" src="removeNomination.js"></script>
 
 </body>
 
