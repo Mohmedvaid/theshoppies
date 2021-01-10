@@ -67,12 +67,12 @@ h1{
 .result-movie-grid-title { 
     grid-area: title; 
     justify-self: start;
-    align-self: center;
+    align-self: end;
 }
 .result-movie-grid-year { 
     grid-area: year; 
     justify-self: start;
-    align-self: center;
+    align-self: start;
 }
 .result-movie-grid-btn { 
     grid-area: btn; 
@@ -88,6 +88,10 @@ h1{
     max-width: 100px;
     max-height: 30px;
     align-self: center;
+}
+
+#nominationLimitAlert{
+    margin: 30px;
 }
 
 
