@@ -32,7 +32,7 @@ $(document).ready(function () {
                 count++;
             } else {
                 $('#nominationLimitAlert').show();
-                // alert("you have reached 5 movie limit")
+                $("html, body").animate({ scrollTop: 0 });
             }
         })
         
