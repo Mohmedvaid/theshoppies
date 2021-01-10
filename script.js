@@ -7,16 +7,16 @@ $(document).ready(function () {
 
     // Close error alert form
     $(function () {
-        $(document).on('click', '#nominationLimitAlertCloseBtn', function () {
-            $(this).parent().hide();
+        $(document).on('click', '.alert', function () {
+            $(this).hide();
         })
     });
-    // Close error alert form
-    $(function () {
-        $(document).on('click', '#iomdb-error-btn', function () {
-            $(this).parent().hide();
-        })
-    });
+    // // Close error alert form
+    // $(function () {
+    //     $(document).on('click', '#iomdb-error-btn', function () {
+    //         $(this).parent().hide();
+    //     })
+    // });
 
     // Display seach results with validations
     $(".movie-search-btn").on('click', async function (e) {
@@ -34,6 +34,7 @@ $(document).ready(function () {
             $(`#iomdb-error-message`).remove()
             $(`#iomdb-error`).prepend(`<p id="iomdb-error-message">${movieData.Error}</p>`)
             $(`#iomdb-error`).show()
+            $(`.movies-result-container`).addClass(`hidden`)
             
         } else {
             // $(".movies-result-container").empty();
@@ -78,7 +79,7 @@ $(document).ready(function () {
 
                     // if there are 
                     if(count === maxMoviesToNominate){
-                        alert("yay!!!!!")
+                        $(`#maxNominationReached`).show()
                     }
                 // display error message on DOM as user has reached max nomination limit
                 } else {
