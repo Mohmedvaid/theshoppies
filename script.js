@@ -11,24 +11,21 @@ $(document).ready(function () {
             $(this).hide();
         })
     });
-    // // Close error alert form
-    // $(function () {
-    //     $(document).on('click', '#iomdb-error-btn', function () {
-    //         $(this).parent().hide();
-    //     })
-    // });
+
 
     // Display seach results with validations
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
-        $(`.results`).removeClass(`hidden`)
-        if(nominatedList.length === 0){
-            addEmptyNominationListMessage();
-        }
-        
         let movieTitle = $(".form-control").val();
-        movieData = await getMovieData(movieTitle);
-        $(".movies-result-container").empty();
+        
+        //Input validation 
+        if(!movieTitle){
+            alert("Please enter a value in the search field.")
+        }
+        else {
+            movieData = await getMovieData(movieTitle);
+        }
+
         // if error display it, else display movies
         if(movieData.Error){
             $(`#iomdb-error-message`).remove()
@@ -37,58 +34,64 @@ $(document).ready(function () {
             $(`.movies-result-container`).addClass(`hidden`)
             
         } else {
-            // $(".movies-result-container").empty();
+            $(".movies-result-container").empty();
             appendMovies(movieData.Search, movieTitle)
             $('.movies-result-container').show()
+            $(`.results`).removeClass(`hidden`);
+            if(nominatedList.length === 0){
+                addEmptyNominationListMessage();
+            }
 
         }
+    })
 
-        $(".nominate-btn").unbind().click(function () {
-            $('.nominated-movie').show();
-            $(`#empty-nomination-list-message`).remove()
+    // Nominate
+    $(document).on('click','.nominate-btn', function (e) {
+        $(".nominate-btn").unbind()
+        $('.nominated-movie').show();
+        $(`#empty-nomination-list-message`).remove()
 
-            // if the nomiated movies are less the 5, nominate the clicked movie
-                if (count < maxMoviesToNominate) {
-                    // get buttin id 
-                    let selectedMovieButtonId = $(this).attr('id')
-                    
-                    // extract the movie id from the clicked button id
-                    selectedMovieImdbId = selectedMovieButtonId.split("-")[1]
+        // if the nomiated movies are less the 5, nominate the clicked movie
+            if (count < maxMoviesToNominate) {
+                // get buttin id 
+                let selectedMovieButtonId = $(this).attr('id')
+                
+                // extract the movie id from the clicked button id
+                selectedMovieImdbId = selectedMovieButtonId.split("-")[1]
 
-                    // add movie id to nominated list. This list will help to disable the nominate button for the movies already nomited
-                    nominatedList.push(selectedMovieImdbId)
+                // add movie id to nominated list. This list will help to disable the nominate button for the movies already nomited
+                nominatedList.push(selectedMovieImdbId)
 
-                    // disblale nominate button
-                    $(`#${selectedMovieButtonId}`).addClass('disabled')
-                    
-                    // get movie data of the clicked movie
-                    let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
+                // disblale nominate button
+                $(`#${selectedMovieButtonId}`).addClass('disabled')
+                
+                // get movie data of the clicked movie
+                let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
 
-                    // move to nominate section on the DOM
-                    moveToNominate(nominatedMovie[0]);
+                // move to nominate section on the DOM
+                moveToNominate(nominatedMovie[0]);
 
-                    // Increament the count of nominated movie
-                    count++;
-                    
-                    // scroll screen to nomination section
-                    if (isMobile) {
-                        $('html, body').animate({
-                            scrollTop: $("div.nominated-movie").offset().top
-                        }, 100);
-                    }
-
-                    // if there are 
-                    if(count === maxMoviesToNominate){
-                        $(`#maxNominationReached`).show()
-                    }
-                // display error message on DOM as user has reached max nomination limit
-                } else {
-                    $('#nominationLimitAlert').show();
-                    $("html, body").animate({
-                        scrollTop: 0
-                    });
+                // Increament the count of nominated movie
+                count++;
+                
+                // scroll screen to nomination section
+                if (isMobile) {
+                    $('html, body').animate({
+                        scrollTop: $("div.nominated-movie").offset().top
+                    }, 100);
                 }
-        })
+
+                // if there are 
+                if(count === maxMoviesToNominate){
+                    $(`#maxNominationReached`).show()
+                }
+            // display error message on DOM as user has reached max nomination limit
+            } else {
+                $('#nominationLimitAlert').show();
+                $("html, body").animate({
+                    scrollTop: 0
+                });
+            }
     })
 
 
