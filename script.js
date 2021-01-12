@@ -11,6 +11,17 @@ $(document).ready(function () {
             $(this).hide();
         })
     });
+    const appendLoaderToBody = () => {
+        $(`body`).prepend(`<div id="loading">
+        <img id="loading-image" src="Assets/spinner.svg" alt="Loading..."/>
+      </div>`);
+    }
+
+    const removeLoader = () => {
+        setTimeout(function () {
+            $('#loading').remove();
+        }, 500);
+    }
 
 
     // Display seach results with validations
@@ -23,7 +34,9 @@ $(document).ready(function () {
             alert("Please enter a value in the search field.")
         }
         else {
+            appendLoaderToBody();
             movieData = await getMovieData(movieTitle);
+            removeLoader();
         }
 
         // if error display it, else display movies
@@ -102,7 +115,6 @@ $(document).ready(function () {
                     scrollTop: 0
                 });
             }
-
     })
 
 
