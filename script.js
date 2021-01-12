@@ -61,13 +61,23 @@ $(document).ready(function () {
                 selectedMovieImdbId = selectedMovieButtonId.split("-")[1]
 
                 // add movie id to nominated list. This list will help to disable the nominate button for the movies already nomited
-                nominatedList.push(selectedMovieImdbId)
-
+        
+                
                 // disblale nominate button
                 $(`#${selectedMovieButtonId}`).addClass('disabled')
                 
                 // get movie data of the clicked movie
                 let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
+                console.log("returned movie", nominatedMovie)
+                let movieDetails = {
+                    imdbID: nominatedMovie[0].imdbID,
+                    Title: nominatedMovie[0].Title,
+                    Year: nominatedMovie[0].Year,
+                    Poster: nominatedMovie[0].Poster,
+                }
+                nominatedList.push(movieDetails)
+                console.log("nominatedList inside", nominatedList)
+                localStorage.setItem('nominatedList', JSON.stringify(nominatedList));
 
                 // move to nominate section on the DOM
                 moveToNominate(nominatedMovie[0]);
@@ -105,7 +115,6 @@ $(document).ready(function () {
         let selectedMovieId = nominateBtnId.split("-")[1]
         $(`#resultbtn-${selectedMovieId}`).removeClass(`disabled`)
         count--;
-        console.log(nominatedList)
 
         removeFromNominationList(selectedMovieId, nominatedList)
 
@@ -115,8 +124,14 @@ $(document).ready(function () {
 
     })
 
-    const removeFromNominationList = (omdbaId, nominatedList) => {
-        const index = nominatedList.indexOf(omdbaId);
+    const removeFromNominationList = (movieId, nominatedList) => {
+        // const index = nominatedList.indexOf(movieId);
+        const index = nominatedList.foreach(function(movie, index){
+            if(movie.imdbID === movieId){
+                return index;
+            }
+            return -1;
+        })
         if (index > -1) {
             nominatedList.splice(index, 1);
         }
@@ -134,6 +149,7 @@ $(document).ready(function () {
             url: query,
             method: "GET"
         })
+        console.log(movieData)
         return movieData;
     }
     const appendMovies = (dataArray, searchTerm) => {
@@ -149,9 +165,15 @@ $(document).ready(function () {
                 ${dataArray.map(movie =>{
                     movieYear = movie.Year;
                     isNominated = ""
-                    if(nominatedList.includes(movie.imdbID)){
-                        isNominated = "disabled"
-                    }
+
+                    //  Disable to nominate button if movie already nominated
+                    nominatedList.forEach(nominatedMovie => {
+                        if(movie.imdbID === nominatedMovie.imdbID){
+                            isNominated = "disabled"
+                        }
+                        return false;
+                    })
+
                     // Remove "-" if there is only one year
                     if(movieYear[movieYear.length - 1] == "–" ){
                         movieYear = movieYear.slice(0, -1)
@@ -179,6 +201,8 @@ $(document).ready(function () {
 
 
     const moveToNominate = (movie) => {
+        console.log(movie.iomDbId)
+        
 
     let element = `
             <div id="nominated-${movie.imdbID}" class="result-movie">
@@ -194,5 +218,14 @@ $(document).ready(function () {
     appendElement(element, ".results-nominations")
     }
 
+    if (JSON.parse(localStorage.getItem('nominatedList'))) {
+        nominatedList = JSON.parse(localStorage.getItem('nominatedList'))
+        console.log(nominatedList)
+        nominatedList.forEach(movie => {
+            moveToNominate(movie)
+        });
+        $(`.results`).removeClass(`hidden`);
+        $('.nominated-movie').show();
+    }
 //ready ends
 });
