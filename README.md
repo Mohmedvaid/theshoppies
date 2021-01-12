@@ -9,7 +9,7 @@ A simple web app that allows the user to search movies using OMDB api. The app a
 Nominated movies are saved in the localstorage of the browser therefore when user reloads the page, nominated movies are not lost
 
 ## Usage
-mohmedvaid.github.io/theshoppies/
+https://mohmedvaid.github.io/theshoppies/
 
 
 ## Credits
