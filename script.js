@@ -131,7 +131,7 @@ $(document).ready(function () {
     // user friendly loader
     const appendLoaderToBody = () => {
         $(`body`).prepend(`<div id="loading">
-        <img id="loading-image" src="Assets/spinner.svg" alt="Loading..."/>
+        <img id="loading-image" src="assets/spinner.svg" alt="Loading..."/>
         </div>`);
     }
 
