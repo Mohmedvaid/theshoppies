@@ -1,6 +1,6 @@
 # The Shoppies
 
-<img alt="Weather App" src="assets/theshoppies-preview-compressed.png" width=1000>
+<img alt="Weather App" src="assets/theshoppies-demo.gif" width=700>
 
 
 ## Description
