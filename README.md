@@ -1,6 +1,6 @@
 # The Shoppies
 
-<img alt="Weather App" src="assets/theshoppies-demo.gif" width=700>
+<img alt="The Shoppies" src="assets/theshoppies-demo.gif" width=700>
 
 
 ## Description
@@ -9,7 +9,7 @@ A simple web app that allows the user to search movies using OMDB api. The app a
 Nominated movies are saved in the localstorage of the browser therefore when user reloads the page, nominated movies are not lost
 
 ## Usage
-https://mohmedvaid.github.io/weather-app/
+mohmedvaid.github.io/theshoppies/
 
 
 ## Credits
