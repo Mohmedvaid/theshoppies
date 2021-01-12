@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let count = 0
+    let totalNominatedMovies = 0
     let movieData;
     let isMobile = window.matchMedia("only screen and (max-width: 786px)").matches;
     let nominatedList = [];
@@ -53,7 +53,7 @@ $(document).ready(function () {
         $(`.alert`).hide()
 
         // if the nomiated movies are less the 5, nominate the clicked movie
-            if (count < maxMoviesToNominate) {
+            if (totalNominatedMovies < maxMoviesToNominate) {
                 // get buttin id 
                 let selectedMovieButtonId = $(this).attr('id')
                 
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 
                 // get movie data of the clicked movie
                 let nominatedMovie = nominateMovie(movieData.Search, selectedMovieImdbId)
-                console.log("returned movie", nominatedMovie)
+
                 let movieDetails = {
                     imdbID: nominatedMovie[0].imdbID,
                     Title: nominatedMovie[0].Title,
@@ -76,14 +76,13 @@ $(document).ready(function () {
                     Poster: nominatedMovie[0].Poster,
                 }
                 nominatedList.push(movieDetails)
-                console.log("nominatedList inside", nominatedList)
                 localStorage.setItem('nominatedList', JSON.stringify(nominatedList));
 
                 // move to nominate section on the DOM
                 moveToNominate(nominatedMovie[0]);
 
-                // Increament the count of nominated movie
-                count++;
+                // Increament the totalNominatedMovies count of nominated movie
+                totalNominatedMovies++;
                 
                 // scroll screen to nomination section
                 if (isMobile) {
@@ -93,7 +92,7 @@ $(document).ready(function () {
                 }
 
                 // if there are 
-                if(count === maxMoviesToNominate){
+                if(totalNominatedMovies === maxMoviesToNominate){
                     $(`#maxNominationReached`).show()
                 }
             // display error message on DOM as user has reached max nomination limit
@@ -103,7 +102,7 @@ $(document).ready(function () {
                     scrollTop: 0
                 });
             }
-        console.log(count)
+
     })
 
 
@@ -114,9 +113,11 @@ $(document).ready(function () {
         $(`div#${nominateBtnId}`).remove();
         let selectedMovieId = nominateBtnId.split("-")[1]
         $(`#resultbtn-${selectedMovieId}`).removeClass(`disabled`)
-        count--;
+        totalNominatedMovies--;
+        $(`.alert`).hide()
 
-        removeFromNominationList(selectedMovieId, nominatedList)
+        removeFromNominationList(selectedMovieId);
+        localStorage.setItem('nominatedList', JSON.stringify(nominatedList));
 
         if(nominatedList.length === 0){
             addEmptyNominationListMessage();
@@ -124,14 +125,16 @@ $(document).ready(function () {
 
     })
 
-    const removeFromNominationList = (movieId, nominatedList) => {
+    const removeFromNominationList = (movieId) => {
         // const index = nominatedList.indexOf(movieId);
-        const index = nominatedList.foreach(function(movie, index){
-            if(movie.imdbID === movieId){
-                return index;
+        let index = -1;
+
+        for(let i = 0; i < nominatedList.length; i++){
+            if(nominatedList[i].imdbID === movieId){
+                index = i;
             }
-            return -1;
-        })
+        }
+
         if (index > -1) {
             nominatedList.splice(index, 1);
         }
@@ -149,7 +152,6 @@ $(document).ready(function () {
             url: query,
             method: "GET"
         })
-        console.log(movieData)
         return movieData;
     }
     const appendMovies = (dataArray, searchTerm) => {
@@ -200,29 +202,27 @@ $(document).ready(function () {
     }
 
 
-    const moveToNominate = (movie) => {
-        console.log(movie.iomDbId)
-        
+    const moveToNominate = (movie) => {  
+        let element = `
+                <div id="nominated-${movie.imdbID}" class="result-movie">
+                    <img class="result-movie-grid-img"  src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
+                    <p class="result-movie-grid-title">${movie.Title}</p>
+                    <p class="result-movie-grid-year">${movie.Year}</p>
+                    <button type="button" class="btn btn-danger btn-sm remove-btn result-movie-grid-btn"  id="nominated-${movie.imdbID}">Remove</button>
+                </div>`
+        // remove from results
+        $(`#result-btn-${movie.imdbID}`).addClass(`disabled`);
 
-    let element = `
-            <div id="nominated-${movie.imdbID}" class="result-movie">
-                <img class="result-movie-grid-img"  src="${movie.Poster}" alt="Girl in a jacket" width="100" height="100">
-                <p class="result-movie-grid-title">${movie.Title}</p>
-                <p class="result-movie-grid-year">${movie.Year}</p>
-                <button type="button" class="btn btn-danger btn-sm remove-btn result-movie-grid-btn"  id="nominated-${movie.imdbID}">Remove</button>
-            </div>`
-    // remove from results
-    $(`#result-btn-${movie.imdbID}`).addClass(`disabled`);
-
-    // add to nominate section
-    appendElement(element, ".results-nominations")
+        // add to nominate section
+        appendElement(element, ".results-nominations")
     }
 
     if (JSON.parse(localStorage.getItem('nominatedList'))) {
         nominatedList = JSON.parse(localStorage.getItem('nominatedList'))
-        console.log(nominatedList)
+
         nominatedList.forEach(movie => {
             moveToNominate(movie)
+            totalNominatedMovies++;
         });
         $(`.results`).removeClass(`hidden`);
         $('.nominated-movie').show();
