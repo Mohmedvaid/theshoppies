@@ -17,7 +17,7 @@ $(document).ready(function () {
     $(".movie-search-btn").on('click', async function (e) {
         e.preventDefault();
         let movieTitle = $(".form-control").val();
-        
+        $(`.alert`).hide()
         //Input validation 
         if(!movieTitle){
             alert("Please enter a value in the search field.")
@@ -50,6 +50,7 @@ $(document).ready(function () {
         $(".nominate-btn").unbind()
         $('.nominated-movie').show();
         $(`#empty-nomination-list-message`).remove()
+        $(`.alert`).hide()
 
         // if the nomiated movies are less the 5, nominate the clicked movie
             if (count < maxMoviesToNominate) {
@@ -92,6 +93,7 @@ $(document).ready(function () {
                     scrollTop: 0
                 });
             }
+        console.log(count)
     })
 
 
