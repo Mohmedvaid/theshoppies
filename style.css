@@ -34,7 +34,7 @@ h1{
     margin-top: 50px;
 }
 .hidden{
-    display: none;
+    display: none !important;
 }
 .movies-result-container, .nominated-movie {
     padding: 20px;

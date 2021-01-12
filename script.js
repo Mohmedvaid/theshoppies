@@ -30,13 +30,13 @@ $(document).ready(function () {
         if(movieData.Error){
             $(`#iomdb-error-message`).remove()
             $(`#iomdb-error`).prepend(`<p id="iomdb-error-message">${movieData.Error}</p>`)
-            $(`#iomdb-error`).show()
+            $(`#iomdb-error`).removeClass(`hidden`);
             $(`.movies-result-container`).addClass(`hidden`)
             
         } else {
             $(".movies-result-container").empty();
             appendMovies(movieData.Search, movieTitle)
-            $('.movies-result-container').show()
+            $('.movies-result-container').removeClass(`hidden`);
             $(`.results`).removeClass(`hidden`);
             if(nominatedList.length === 0){
                 addEmptyNominationListMessage();
@@ -48,7 +48,7 @@ $(document).ready(function () {
     // Nominate
     $(document).on('click','.nominate-btn', function (e) {
         $(".nominate-btn").unbind()
-        $('.nominated-movie').show();
+        $('.nominated-movie').removeClass(`hidden`);
         $(`#empty-nomination-list-message`).remove()
         $(`.alert`).hide()
 
@@ -93,11 +93,11 @@ $(document).ready(function () {
 
                 // if there are 
                 if(totalNominatedMovies === maxMoviesToNominate){
-                    $(`#maxNominationReached`).show()
+                    $(`#maxNominationReached`).removeClass(`hidden`).show();
                 }
             // display error message on DOM as user has reached max nomination limit
             } else {
-                $('#nominationLimitAlert').show();
+                $('#nominationLimitAlert').removeClass(`hidden`).show();
                 $("html, body").animate({
                     scrollTop: 0
                 });
@@ -122,6 +122,7 @@ $(document).ready(function () {
         if(nominatedList.length === 0){
             addEmptyNominationListMessage();
         }
+        console.log(nominatedList)
 
     })
 
@@ -217,7 +218,7 @@ $(document).ready(function () {
         appendElement(element, ".results-nominations")
     }
 
-    if (JSON.parse(localStorage.getItem('nominatedList'))) {
+    if (JSON.parse(localStorage.getItem('nominatedList')).length > 0) {
         nominatedList = JSON.parse(localStorage.getItem('nominatedList'))
 
         nominatedList.forEach(movie => {
@@ -225,7 +226,7 @@ $(document).ready(function () {
             totalNominatedMovies++;
         });
         $(`.results`).removeClass(`hidden`);
-        $('.nominated-movie').show();
+        $('.nominated-movie').removeClass(`hidden`);
     }
 //ready ends
 });
