@@ -56,6 +56,7 @@ h1{
     text-align: left;
 }
 
+/* Movie results grid */
 .result-movie{
     padding-top: 30px;
     display: grid;
@@ -70,18 +71,19 @@ h1{
 }
 .result-movie-grid-title { 
     grid-area: title; 
-    justify-self: start;
     align-self: end;
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 500;
 }
 .result-movie-grid-year { 
     grid-area: year; 
-    justify-self: start;
     align-self: start;
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 500;
 }
+
+.result-movie-grid-title, .result-movie-grid-year  {
+    justify-self: start;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif !important;  
+}
+
 .result-movie-grid-btn { 
     grid-area: btn; 
     justify-self: center;
@@ -133,8 +135,19 @@ h1{
 
 /* mobile */
 @media only screen and (max-width: 786px) {
+    .main{
+        margin: 30px 10px;
+    }
     .results {
         flex-direction: column;
         align-items: center;
+        padding: 0;
+    }
+    .result-movie{
+        grid-gap: 10px;
+        grid-template-columns: 1fr 2fr;
+    }
+    .result-movie-grid-title, .result-movie-grid-year  {
+        font-size: 0.9em;
     }
 }

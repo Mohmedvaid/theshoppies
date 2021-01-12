@@ -6,21 +6,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Local CSS -->
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css" />
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    <!-- Animation library -->
+  <!-- Animation library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-  <!-- google fonts -->
+  <!-- Google fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
-  <title>Hello, world!</title>
+  <title>The Shoppies</title>
 </head>
 
 <body>
@@ -37,18 +37,19 @@
       </form>
     </div>
 
-    <div id="iomdb-error"class="alert alert-danger alert-dismissible fade show hidden" role="alert">
+    <!-- api error alert -->
+    <div id="iomdb-error" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
       <button type="button" class="btn-close" id="iomdb-error-btn" aria-label="Close"></button>
     </div>
-    
+
     <!-- nominationLimitAlert alert -->
-    <div id="nominationLimitAlert"class="alert alert-danger alert-dismissible fade show hidden" role="alert">
+    <div id="nominationLimitAlert" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
       <strong>Oh no!</strong> You can only add <b>five</b> movies to nominate.
       <button type="button" class="btn-close" id="nominationLimitAlertCloseBtn" aria-label="Close"></button>
     </div>
 
     <!-- maxNominationReached alert -->
-    <div id="maxNominationReached"class="alert alert-success alert-dismissible fade show hidden" role="alert">
+    <div id="maxNominationReached" class="alert alert-success alert-dismissible fade show hidden" role="alert">
       <p>Max Nomination Reached</p>
       <button type="button" class="btn-close" id="maxNominationReachedBtn" aria-label="Close"></button>
     </div>
@@ -66,13 +67,13 @@
   </div>
 
 
-
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+  <!-- SCRIPTS -->
+  <!-- Bootstrap Bundle with Popper -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
   </script>
+  <!-- Main JS -->
   <script type="text/javascript" src="script.js"></script>
 
 </body>
