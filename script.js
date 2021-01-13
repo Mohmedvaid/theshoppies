@@ -16,12 +16,16 @@ $(document).ready(function () {
             $(this).hide();
         })
     });
+    $(function(){
+        $(document).on(`click`,`#modalBtn`, function(){
+            $(`.modal`).modal('hide');
+        })
+    })
 
     // Display seach results with validations
     $(`.movie-search-btn`).on(`click`, async function (e) {
         e.preventDefault();
         let movieTitle = $(`.form-control`).val();
-        $(`.alert`).hide()
         //Input validation 
         if(!movieTitle){
             alert(`Please enter a value in the search field.`)
@@ -31,15 +35,15 @@ $(document).ready(function () {
             movieData = await getMovieData(movieTitle);
             removeLoader();
         }
-
         // if error display it, else display movies
         if(movieData.Error){
-            $(`#iomdb-error-message`).remove()
-            $(`#iomdb-error`).prepend(`<p id="iomdb-error-message">${movieData.Error}</p>`)
-            $(`#iomdb-error`).removeClass(`hidden`);
+            $(`#iomdbErrorMessage`).remove()
+            $(`#iomdbError`).prepend(`<p id="iomdbErrorMessage">${movieData.Error}</p>`)
+            $(`#iomdbError`).removeClass(`hidden`);
             $(`.movies-result-container`).addClass(`hidden`)
             
         } else {
+            $(`#iomdbError`).addClass(`hidden`);
             $(`.movies-result-container`).empty();
             appendMovies(movieData.Search, movieTitle)
             $(`.movies-result-container`).removeClass(`hidden`);
@@ -97,14 +101,13 @@ $(document).ready(function () {
 
                 // if there are 
                 if(totalNominatedMovies === maxMoviesToNominate){
-                    $(`#maxNominationReached`).removeClass(`hidden`).show();
+                    // $(`#maxNominationReached`).removeClass(`hidden`).show();
+                    $('#maxNominationReached').modal('show')
                 }
             // display error message on DOM as user has reached max nomination limit
             } else {
-                $(`#nominationLimitAlert`).removeClass(`hidden`).show();
-                $(`html, body`).animate({
-                    scrollTop: 0
-                });
+                // $(`#nominationLimitAlert`).removeClass(`hidden`).show();
+                $('#nominationLimitAlert').modal('show')
             }
     })
 

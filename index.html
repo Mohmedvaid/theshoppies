@@ -38,20 +38,45 @@
     </div>
 
     <!-- api error alert -->
-    <div id="iomdb-error" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
-      <button type="button" class="btn-close" id="iomdb-error-btn" aria-label="Close"></button>
+    <div id="iomdbError" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
+      <button type="button" class="btn-close" aria-label="Close"></button>
     </div>
 
     <!-- nominationLimitAlert alert -->
-    <div id="nominationLimitAlert" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
-      <strong>Oh no!</strong> You can only add <b>five</b> movies to nominate.
-      <button type="button" class="btn-close" id="nominationLimitAlertCloseBtn" aria-label="Close"></button>
-    </div>
+      <!-- Modal -->
+      <div class="modal fade" id="nominationLimitAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Oh no!</h5>
+            </div>
+            <div class="modal-body">
+              You can only nominate <strong>Five</strong> movies.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="modalBtn"  data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <!-- maxNominationReached alert -->
-    <div id="maxNominationReached" class="alert alert-success alert-dismissible fade show hidden" role="alert">
-      <p>Max Nomination Reached</p>
-      <button type="button" class="btn-close" id="maxNominationReachedBtn" aria-label="Close"></button>
+    <!-- Modal -->
+    <div class="modal fade" id="maxNominationReached" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Yay!!!</h5>
+          </div>
+          <div class="modal-body">
+            You have nominated five movies.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="modalBtn" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Results container -->

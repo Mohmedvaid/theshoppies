@@ -100,10 +100,10 @@ h1{
     align-self: center;
 }
 
-#nominationLimitAlert, #maxNominationReached{
+/* #nominationLimitAlert, #maxNominationReached{
     margin: 30px;
-}
-#iomdb-error{
+} */
+#iomdbError{
     margin: 20px;
 }
 
